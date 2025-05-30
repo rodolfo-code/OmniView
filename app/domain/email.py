@@ -8,7 +8,7 @@ class EmailParticipant(BaseModel):
 
 class EmailBody(BaseModel):
     content: str
-    content_type: str = Field(alias="contentType")
+    content_type: str = Field(alias="content_type")
 
 class Email(BaseModel):
     id: str

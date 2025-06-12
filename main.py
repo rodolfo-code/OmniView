@@ -1,4 +1,5 @@
 import logging
+import os
 
 from fastapi import FastAPI
 from dotenv import load_dotenv
@@ -24,7 +25,7 @@ app.include_router(graphMicrosoftRouter, prefix="/graph-microsoft", tags=["Graph
 
 
 @app.get("/", summary="Verifica se a API está funcionando")
-def read_root():
+def read_root():    
     return {
         "message": "API para o projeto Graph",
         "status": "online",

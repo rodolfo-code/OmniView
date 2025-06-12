@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from datetime import datetime
 from pydantic import BaseModel, Field
 
@@ -11,15 +11,15 @@ class EmailBody(BaseModel):
     content_type: str = Field(alias="content_type")
 
 class Email(BaseModel):
-    id: str
-    subject: str
+    id: Optional[str] = None
+    subject: Optional[str] = None
     sender: EmailParticipant = Field(alias="from")
     recipients: List[EmailParticipant] = Field(alias="to")
     body: EmailBody
-    received_date_time: datetime = Field(alias="received_date_time")
-    sent_date_time: datetime = Field(alias="sent_date_time")
-    is_read: bool = Field(alias="is_read")
-    has_attachments: bool = Field(alias="has_attachments")
+    received_date_time: Optional[datetime] = None
+    sent_date_time: Optional[datetime] = None
+    is_read: Optional[bool] = None
+    has_attachments: Optional[bool] = None
 
     class Config:
         populate_by_name = True

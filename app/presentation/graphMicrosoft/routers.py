@@ -76,7 +76,7 @@ async def processGraphWebhook(email_data: dict, email_service: EmailApplicationS
     """
     
     try:
-        logger.info(f"Dados recebidos do webhook: {json.dumps(email_data, indent=2)}")
+        logger.info("Dados recebidos do webhook")
         
         email = transform_webhook_data(email_data)
         analysis_result = await email_service.process_incoming_email(email)

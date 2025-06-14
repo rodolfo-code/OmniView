@@ -29,6 +29,6 @@ class EmailApplicationService:
             "tasks": final_state.get("tasks", [])
         }
         
-        logger.info(f"Análise do e-mail concluída: {result}")
-        print(f"Resultado da análise: {result}")
+        logger.info(f"Análise do e-mail concluída")
+        
         return result

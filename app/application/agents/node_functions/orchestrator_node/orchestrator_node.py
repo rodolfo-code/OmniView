@@ -10,12 +10,19 @@ def orchestrator_node(state: EmailAnalysisState) -> EmailAnalysisState:
     Categoriza o email em uma categoria.
     """
 
+    current_context = state.get("context", "EXTRACT_TASKS_CONTEXT")
+   
     logger.info("Iniciando processamento do e-mail")
-    logger.info("E-mail: %s", state.get("raw_email"))
 
-    llm_service = LLMFactory.create_llm_service("openai")
+    if current_context == "EXTRACT_TASKS_CONTEXT":
 
-    classification = llm_service.classify_email(state.get("raw_email"))
+        llm_service = LLMFactory.create_llm_service("openai")
+
+        classification = llm_service.classify_email(state.get("raw_email"))
+
+    elif current_context == "SEND_TASK_CONTEXT":
+        classification = "SEND_TASK"
+
 
     logger.info("Classificação do e-mail: %s", classification)
 

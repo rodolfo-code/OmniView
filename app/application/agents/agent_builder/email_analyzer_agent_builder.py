@@ -1,7 +1,7 @@
 from typing import TypedDict
 from app.application.agents.agent_builder.edge_config.edge_configurator import EmailEdgeConfigurator
 from app.application.agents.agent_builder.node_config.node_configurator import EmailNodeConfigurator
-from app.application.agents.routers import OrchestratorRouter
+from app.application.agents.agent_builder.routers import OrchestratorRouter
 from app.domain.email import Email
 from langgraph.graph import StateGraph, END
 
@@ -32,7 +32,7 @@ class EmailAgentBuilder:
         self.node_configurator.configure_nodes(self.workflow)
 
         self.workflow.set_entry_point("ORCHESTRATOR_NODE")
-        
+
         self.edge_configurator.configure_edges(self.workflow, self.routers)
 
     def build_agent(self):

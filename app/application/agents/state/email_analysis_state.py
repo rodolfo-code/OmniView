@@ -6,4 +6,5 @@ class EmailAnalysisState(TypedDict):
     tasks: list[Task]
     raw_email: Email
 
+    context: str
     next_step: str

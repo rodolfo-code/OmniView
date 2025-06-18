@@ -1,7 +1,11 @@
 import logging
+from langchain_core.messages import HumanMessage
 from app.application.agents.state.email_analysis_state import EmailAnalysisState
 from app.domain.email import Email
 from app.infrastructure.services.llm.llm_factory import LLMFactory
+
+
+from app.application.agents.tools.calculator_tool import calculator_tool
 
 logger = logging.getLogger(__name__)
 
@@ -9,24 +13,20 @@ def orchestrator_node(state: EmailAnalysisState) -> EmailAnalysisState:
     """
     Categoriza o email em uma categoria.
     """
+    messages = state["messages"]
 
-    current_context = state.get("context", "EXTRACT_TASKS_CONTEXT")
-   
-    logger.info("Iniciando processamento do e-mail")
+    if not messages:
+        initial_human_message = HumanMessage(content=" 'x' = 20, 'y' = 10")
+        messages = [initial_human_message]
 
-    if current_context == "EXTRACT_TASKS_CONTEXT":
+    llm_service = LLMFactory.create_llm_service("openai")
 
-        llm_service = LLMFactory.create_llm_service("openai")
+    llm_response = llm_service.client_tools(messages)
 
-        classification = llm_service.classify_email(state.get("raw_email"))
-
-    elif current_context == "SEND_TASK_CONTEXT":
-        classification = "SEND_TASK"
-
-
-    logger.info("Classificação do e-mail: %s", classification)
+    llm_response["has_task"]
+    
 
     return {
         **state,
-        "next_step": classification
+        "messages": state["messages"] + [llm_response]
     }

@@ -1,7 +1,6 @@
 import logging
 from typing import TypedDict
 from app.application.agents.state.email_analysis_state import EmailAnalysisState
-from app.application.agents.tools.update_tasks_state import generate_random_ints
 from app.infrastructure.services.llm.llm_factory import LLMFactory
 
 logger = logging.getLogger(__name__)

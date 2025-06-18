@@ -14,3 +14,10 @@ class ILLMService(ABC):
         Extrai as tarefas do e-mail.
         '''
         pass
+
+    @abstractmethod
+    def client_tools(self, args):
+        '''
+        Retorna o cliente com as ferramentas.
+        '''
+        pass

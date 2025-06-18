@@ -1,15 +1,17 @@
 import json
 import logging
+from typing import Callable, Sequence
 
 from langchain_openai import ChatOpenAI
-from app.application.agents.node_functions.orchestrator_node.classify_email_prompt import CLASSIFY_EMAIL_TEMPLATE
+from app.application.agents.node_functions.orchestrator_node.classify_email_prompt import CALCULATOR_PROMPT_TEMPLATE, CLASSIFY_EMAIL_TEMPLATE
 from app.application.agents.node_functions.task_extraction_node.tasks_extract_prompt import TASKS_EXTRACT_TEMPLATE
+from app.application.agents.tools.calculator_tool import calculator_tool, divide_tool
 from app.application.interfaces.illm_service import ILLMService
 from app.domain.email import Email
 from app.infrastructure.config.config import settings
-from app.application.agents.tools.update_tasks_state import update_tasks_state, generate_random_ints
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 
-from langgraph.prebuilt import create_react_agent
+from langgraph.prebuilt import ToolNode
 
 logger = logging.getLogger(__name__)
 
@@ -20,6 +22,21 @@ class OpenAIService(ILLMService):
             model=settings.OPENAI_MODEL_NAME,
             temperature=settings.OPENAI_TEMPERATURE
         )
+
+        self.client_with_tools = self.client.bind_tools([calculator_tool, divide_tool])
+
+        # self.client_with_tools = ToolNode([calculator_tool])
+
+    def client_tools(self, messages: Sequence[BaseMessage]):
+
+        chains = CALCULATOR_PROMPT_TEMPLATE | self.client_with_tools
+
+        llm_response = chains.invoke({"messages": messages})
+
+        print("LLM RESPONSE", llm_response)
+
+        return llm_response
+
 
     def classify_email(self, email: Email) -> str:
         chain = CLASSIFY_EMAIL_TEMPLATE | self.client
@@ -42,7 +59,7 @@ class OpenAIService(ILLMService):
         chain = TASKS_EXTRACT_TEMPLATE | self.client
 
         try:
-            self.client.bind_tools([])
+            
             
             llm_response = chain.invoke({"email_content": email})
 
@@ -50,30 +67,29 @@ class OpenAIService(ILLMService):
 
             response_data = json.loads(llm_response.content)
 
+            # tool_node = ToolNode([generate_random_ints])
 
-            tool_node = ToolNode([generate_random_ints, update_tasks_state])
-
-            update_tasks_state_tool = [
-                {
-                    "name": "update_tasks_state",
-                    "args": {"state": state, "tasks": response_data },
-                    "id": "123",
-                    "type": "tool_call"
-                }
-            ]
-
-            
-            # tool_calls = [
+            # update_tasks_state_tool = [
             #     {
-            #         "name": "generate_random_ints",
-            #         "args": {"min": 0, "max": 9, "size": 10},
+            #         "name": "update_tasks_state",
+            #         "args": {"state": state, "tasks": response_data },
             #         "id": "123",
             #         "type": "tool_call"
             #     }
             # ]
+
+            
+            tool_calls = [
+                {
+                    "name": "generate_random_ints",
+                    "args": {"min": 0, "max": 9, "size": 10},
+                    "id": "123",
+                    "type": "tool_call"
+                }
+            ]
         
             
-            print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", tool_node.invoke(update_tasks_state_tool))
+            # print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", tool_node.invoke(update_tasks_state_tool))
             # chain = GENERATE_RANDOM_INTS_TEMPLATE | tool_node | self.client
 
             # chain.invoke({"email_content": email})

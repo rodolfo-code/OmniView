@@ -40,9 +40,10 @@ class EmailAgentBuilder:
         return self._build_agent
 
 
-
-
-
+def get_email_analyzer_agent():
+    builder = EmailAgentBuilder()
+    agent = builder.build_agent()
+    return agent
 
 
 

@@ -1,3 +1,4 @@
+from typing import Callable, List
 from app.application.interfaces.illm_service import ILLMService
 from app.infrastructure.services.llm.openai_service import OpenAIService
 
@@ -9,3 +10,5 @@ class LLMFactory:
             return OpenAIService()
         else:
             raise ValueError(f"Provider de LLM não suportado: {llm_provider}")
+
+        

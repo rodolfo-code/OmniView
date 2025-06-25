@@ -19,8 +19,11 @@ TASKS_EXTRACT_TEMPLATE = ChatPromptTemplate.from_template(
         "title": "título da tarefa",
         "description": "descrição detalhada",
         "sender": "remetente",
-        "company": "empresa remetente",
-        "in_charge": "pessoa responsável"
+        "sender_email": "email do remetente",
+        "client": "empresa remetente",
+        "contract": "contrato da empresa remetente",
+        "responsible": "pessoa responsável",
+        "responsible_email": "email da pessoa que esta recebendo o email"
     }}
 
     Se não for possível identificar algum dos campos, use "Não especificado".
@@ -37,8 +40,9 @@ TASKS_EXTRACT_TEMPLATE = ChatPromptTemplate.from_template(
     - Retorne apenas o JSON com as tarefas identificadas
     - NÃO inclua ```json ou qualquer outra formatação markdown
     - Retorne APENAS o JSON puro
-    - O in_charge é a pessoa que recebeu o email
+    - O responsible é a pessoa que recebeu o email
     - O sender é a pessoa que enviou o email
-    - O company é a empresa da pessoa que enviou o email
+    - O client é a empresa da pessoa que enviou o email
+    - O contract é o contrato da empresa remetente, neste caso o nome do contrato sera apenas ou "Vale" ou "Integridade" ou "ALLOS", se não for possível identificar o contrato, use "Externo"
     """
 )

@@ -1,4 +1,7 @@
 from abc import ABC, abstractmethod
+from typing import Sequence
+
+from langchain_core.messages import BaseMessage
 
 class ILLMService(ABC):
     @abstractmethod
@@ -16,8 +19,8 @@ class ILLMService(ABC):
         pass
 
     @abstractmethod
-    def client_tools(self, args):
-        '''
-        Retorna o cliente com as ferramentas.
-        '''
+    def client_tools(self, messages: Sequence[BaseMessage]):
+        """
+        Chama a ferramenta de inserção de tarefas.
+        """	
         pass

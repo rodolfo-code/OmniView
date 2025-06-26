@@ -35,7 +35,7 @@ class DeltaTask(BaseModel):
                 name=task.responsible,
                 email=task.responsible_email
             ),
-            createdAt=datetime.now().isoformat() # formato de saida = 2025-06-19T11:38:19.000000
+            createdAt=datetime.now().strftime("%d/%m/%Y")
         )
     
     def to_api_format(self) -> dict:

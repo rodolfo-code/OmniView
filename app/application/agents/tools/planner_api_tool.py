@@ -17,7 +17,6 @@ def create_task_in_planner(tasks: List[PlannerTask]) -> dict:
         Resposta da API
     """
 
-
     try:
 
         url = "https://outlook-webhook.livelygrass-5e1cbc66.brazilsouth.azurecontainerapps.io/api/planner/task"

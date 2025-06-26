@@ -74,6 +74,12 @@ async def processGraphWebhook(email_data: dict, email_service: EmailApplicationS
     """
     Endpoint para processar webhooks do Microsoft Graph contendo dados de email.
     """
+
+    sender = email_data.get("from").get("address")
+
+    if "noreply" in sender or "planner.office365.com" in sender:
+        return {"message": "E-mail ignorado"}
+ 
     
     try:
         logger.info("Dados recebidos do webhook")

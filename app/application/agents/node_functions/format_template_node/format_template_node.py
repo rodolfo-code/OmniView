@@ -23,7 +23,7 @@ def format_template_node(state: EmailAnalysisState) -> EmailAnalysisState:
 
 
     if not messages:
-        initial_human_message = HumanMessage(content=f"Envie as seguintes tarefas para o Planner. Importante: Não altere o formato das tarefas: {planner_tasks}")
+        initial_human_message = HumanMessage(content=f"Envie as seguintes tarefas para o Delta e para o Planner. Importante: Não altere o formato das tarefas: {delta_tasks} {planner_tasks}")
         messages = [initial_human_message]
 
     llm_service = LLMFactory.create_llm_service("openai")

@@ -1,4 +1,4 @@
-from typing import Annotated, TypedDict
+from typing import Annotated, List, Optional, TypedDict
 from app.domain.email import Email
 from app.domain.task import Task
 from langchain_core.messages import BaseMessage
@@ -13,5 +13,9 @@ class EmailAnalysisState(TypedDict):
     context: str
     next_step: str
     classification: str
+
+    contract_id: Optional[str]
+    contracts_for_choice: Optional[List[dict]]
+
 
     multiplication_result: int

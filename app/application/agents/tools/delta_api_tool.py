@@ -59,7 +59,7 @@ def create_task_in_delta(tasks: List[DeltaTask]) -> dict:
         save_tasks_to_json(tasks)
     
 
-        url = "https://0342-179-127-37-53.ngrok-free.app/tasks/batch"
+        url = "https://01f7-179-127-37-53.ngrok-free.app/tasks/batch"
         
         headers = {
             "Content-Type": "application/json"
@@ -71,14 +71,7 @@ def create_task_in_delta(tasks: List[DeltaTask]) -> dict:
             "tasks": api_tasks
         }
 
-        print("DATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", data)
-
         response = requests.post(url, json=data, headers=headers)
-
-
-        print("RESPONSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", response.json())
-
-
     
         return response.json()
         # return {"message": "Tarefas criadas com sucesso"}
